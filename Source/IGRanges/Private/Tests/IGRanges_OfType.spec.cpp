@@ -8,7 +8,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesOfTypeSpec, "IG.Ranges.OfType", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesOfTypeSpec, "IG.Ranges.OfType", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Given a range of pointer-like elements, tests that `OfType` behaves the same as `Cast`.

@@ -10,7 +10,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-DEFINE_SPEC(FIGRangesBenchmarksSpec, "IG.Ranges.Benchmarks", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+DEFINE_SPEC(FIGRangesBenchmarksSpec, "IG.Ranges.Benchmarks", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
 static TArray<const UObject*> MakeObjectsArray()
 {

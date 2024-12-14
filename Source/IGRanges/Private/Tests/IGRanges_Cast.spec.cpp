@@ -6,7 +6,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesCastSpec, "IG.Ranges.Cast", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesCastSpec, "IG.Ranges.Cast", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Given a range of pointer-like elements, tests that `IG::Ranges::Cast` behaves the same as `::Cast`.

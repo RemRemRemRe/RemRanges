@@ -9,7 +9,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesToArraySpec, "IG.Ranges.ToArray", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesToArraySpec, "IG.Ranges.ToArray", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 void TestArray(const TArray<int32>& Actual, const TArray<int32>& Expected)
 {

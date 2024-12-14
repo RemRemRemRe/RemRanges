@@ -7,7 +7,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesSelectSpec, "IG.Ranges.Select", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesSelectSpec, "IG.Ranges.Select", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 static constexpr double SquareD(const int32 X)
 {

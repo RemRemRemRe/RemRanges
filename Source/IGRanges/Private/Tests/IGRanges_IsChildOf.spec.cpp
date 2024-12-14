@@ -7,7 +7,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesIsChildOfSpec, "IG.Ranges.IsChildOf", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesIsChildOfSpec, "IG.Ranges.IsChildOf", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Given a range of pointer-like elements, tests that `IG::Ranges::Filters::IsChildOf` behaves the same as `UStruct::IsChildOf`.

@@ -9,7 +9,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-DEFINE_SPEC(FIGRangesCountSpec, "IG.Ranges.Count", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+DEFINE_SPEC(FIGRangesCountSpec, "IG.Ranges.Count", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
 void FIGRangesCountSpec::Define()
 {

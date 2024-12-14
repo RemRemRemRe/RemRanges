@@ -6,7 +6,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-BEGIN_DEFINE_SPEC(FIGRangesNonNullSpec, "IG.Ranges.NonNull", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+BEGIN_DEFINE_SPEC(FIGRangesNonNullSpec, "IG.Ranges.NonNull", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 /**
  * Given a range of pointer-like elements, tests that `NonNull` behaves the same as a null-check.

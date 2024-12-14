@@ -8,7 +8,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-DEFINE_SPEC(FIGRangesCPOSpec, "IG.Ranges.CPO", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter);
+DEFINE_SPEC(FIGRangesCPOSpec, "IG.Ranges.CPO", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter);
 
 /**
  * This function pretty much just ensures that things compile when using UE containers with C++ Ranges.
