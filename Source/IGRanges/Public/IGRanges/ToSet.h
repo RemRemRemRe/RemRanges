@@ -5,6 +5,11 @@
 #include "Containers/Set.h"
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "range/traits.hpp"
+#include "range/concepts.hpp"
+#include "view/view.hpp"
+#include "view/transform.hpp"
+#include "iterator/operations.hpp"
 
 namespace IG::Ranges
 {

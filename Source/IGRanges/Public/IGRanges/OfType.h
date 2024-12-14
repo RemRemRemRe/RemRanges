@@ -7,6 +7,7 @@
 #include "UObject/WeakObjectPtrTemplates.h"
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "view/filter.hpp"
 
 namespace IG::Ranges
 {

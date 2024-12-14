@@ -6,6 +6,8 @@
 #include "Templates/SharedPointer.h"
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "view/view.hpp"
+#include "functional/bind_back.hpp"
 
 namespace IG::Ranges
 {

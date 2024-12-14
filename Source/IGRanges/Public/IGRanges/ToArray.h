@@ -5,6 +5,9 @@
 #include "Containers/Array.h"
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "range/concepts.hpp"
+#include "range/traits.hpp"
+#include "view/transform.hpp"
 
 namespace IG::Ranges
 {

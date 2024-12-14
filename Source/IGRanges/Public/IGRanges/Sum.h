@@ -5,6 +5,8 @@
 #include "IGRanges/Impl/Common.h"
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "view/view.hpp"
+#include "view/transform.hpp"
 
 namespace IG::Ranges
 {
