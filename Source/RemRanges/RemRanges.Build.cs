@@ -27,5 +27,9 @@ public class RemRanges : ModuleRules
 				"RemCommon",
 			}
 		);
+
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/range/"));
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/range/v3/"));
 	}
 }
