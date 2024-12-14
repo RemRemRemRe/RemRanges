@@ -9,7 +9,7 @@
 
 BEGIN_DEFINE_SPEC(FIGRangesWhereSpec, "IG.Ranges.Where", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-constexpr struct FMyNumber
+struct FMyNumber
 {
 	constexpr FMyNumber(int32 InN)
 		: N(InN)

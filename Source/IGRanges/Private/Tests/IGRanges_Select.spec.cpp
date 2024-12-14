@@ -14,7 +14,7 @@ static constexpr double SquareD(const int32 X)
 	return static_cast<double>(X) * static_cast<double>(X);
 }
 
-constexpr struct FMyNumber
+struct FMyNumber
 {
 	constexpr FMyNumber(int32 InN)
 		: N(InN)

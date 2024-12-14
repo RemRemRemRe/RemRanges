@@ -9,7 +9,7 @@
 
 BEGIN_DEFINE_SPEC(FIGRangesFirstOrDefaultSpec, "IG.Ranges.FirstOrDefault", EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-constexpr struct FMyNumber
+struct FMyNumber
 {
 	constexpr FMyNumber() = default;
 
