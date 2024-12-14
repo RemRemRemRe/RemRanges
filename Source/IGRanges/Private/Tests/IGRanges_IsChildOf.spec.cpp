@@ -20,7 +20,7 @@ bool TestPointers(const RangeType& Range)
 	TArray<const UStruct*> ExpectedPointers;
 	for (auto&& X : Range)
 	{
-		if (X != nullptr && X->IsChildOf<UField>())
+		if (X != nullptr && X->template IsChildOf<UField>())
 		{
 			ExpectedPointers.Emplace(IG::Ranges::Private::AsStructPointer(X));
 		}

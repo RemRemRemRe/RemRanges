@@ -25,7 +25,7 @@ struct NonNullRef_fn
 		{
 			return std::forward<RangeType>(Range)
 				 | ranges::views::filter([](auto&& x) { return x.IsValid(); })
-				 | ranges::views::transform([](auto&& x) -> T::ElementType& { return *x.Pin().Get(); });
+				 | ranges::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
 		}
 		else
 		{
