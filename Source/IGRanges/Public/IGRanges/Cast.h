@@ -56,7 +56,7 @@ template <class T>
 template <class T>
 [[nodiscard]] constexpr auto CastChecked(ECastCheckedType::Type CheckType)
 {
-	return ranges::views::transform([](auto&& x) { return ::CastChecked<T>(x, CheckType); });
+	return ranges::views::transform([CheckType](auto&& x) { return ::CastChecked<T>(x, CheckType); });
 }
 
 // Note: There is no `CastCheckedRef(ECastCheckedType::Type)` because it allows for null-in / null-out.
