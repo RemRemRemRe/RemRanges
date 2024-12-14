@@ -17,7 +17,7 @@ DEFINE_SPEC(FIGRangesCPOSpec, "IG.Ranges.CPO", EAutomationTestFlags_ApplicationC
  */
 static void CheckCompat(auto&& Container)
 {
-	UE_LOG(LogIGRangesTests, Verbose, TEXT("%hs"), __FUNCSIG__);
+	UE_LOG(LogIGRangesTests, Verbose, TEXT("%hs"), __FUNCTION__);
 
 	const bool bIsEmpty = ranges::empty(Container);
 	UE_LOG(LogIGRangesTests, Verbose, TEXT("IsEmpty=%s"), bIsEmpty ? TEXT("true") : TEXT("false"));
