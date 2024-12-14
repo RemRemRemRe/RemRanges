@@ -35,6 +35,11 @@ struct Algo_fn
 		{
 			return std::none_of(std::begin(Range), std::end(Range), std::move(_Pred));
 		}
+		else
+		{
+			static_assert(false, "This must not happen");
+			return {};
+		}
 	}
 };
 
