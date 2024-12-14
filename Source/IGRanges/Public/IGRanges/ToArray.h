@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Containers/Array.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -16,12 +15,12 @@ struct ToArray_fn
 	template <typename RangeType>
 	[[nodiscard]] constexpr auto operator()(RangeType&& Range) const
 	{
-		using T = std::ranges::range_value_t<RangeType>;
+		using T = ranges::range_value_t<RangeType>;
 		TArray<T> Array;
 
-		if constexpr (std::ranges::sized_range<RangeType>)
+		if constexpr (ranges::sized_range<RangeType>)
 		{
-			Array.Reserve(std::ranges::distance(Range));
+			Array.Reserve(ranges::distance(Range));
 		}
 
 		for (auto&& X : Range)
@@ -43,7 +42,7 @@ struct ToArray_fn
  */
 [[nodiscard]] inline constexpr auto ToArray()
 {
-	return std::ranges::_Range_closure<_IGRP ToArray_fn>{};
+	return ranges::make_view_closure(_IGRP ToArray_fn{});
 }
 
 /**
@@ -57,7 +56,7 @@ struct ToArray_fn
 template <typename TransformT>
 [[nodiscard]] constexpr auto ToArray(TransformT&& Trans)
 {
-	return std::views::transform(std::forward<TransformT>(Trans))
+	return ranges::views::transform(std::forward<TransformT>(Trans))
 		 | _IGR ToArray();
 }
 

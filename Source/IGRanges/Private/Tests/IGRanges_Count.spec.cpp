@@ -3,7 +3,9 @@
 #include "IGRanges/Count.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
+
+#include "view/empty.hpp"
+#include "view/transform.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -17,7 +19,7 @@ void FIGRangesCountSpec::Define()
 	static constexpr int32 NumSomeValues = UE_ARRAY_COUNT(SomeValues);
 
 	It("empty", [this]() {
-		const int32 ActualCount = std::ranges::empty_view<int32>() | Count();
+		const int32 ActualCount = ranges::empty_view<int32>() | Count();
 		TestEqual("count", ActualCount, 0);
 	});
 
@@ -31,7 +33,7 @@ void FIGRangesCountSpec::Define()
 			return x * x;
 		};
 
-		const int32 ActualCount = SomeValues | std::views::transform(Square) | Count();
+		const int32 ActualCount = SomeValues | ranges::views::transform(Square) | Count();
 		TestEqual("count", ActualCount, NumSomeValues);
 	});
 
@@ -49,7 +51,7 @@ void FIGRangesCountSpec::Define()
 			}
 		}
 
-		int32 ActualCount = SomeValues | std::views::filter(IsEven) | Count();
+		int32 ActualCount = SomeValues | ranges::views::filter(IsEven) | Count();
 		TestEqual("count", ActualCount, ExpectedCount);
 
 		ActualCount = SomeValues | Count(IsEven);

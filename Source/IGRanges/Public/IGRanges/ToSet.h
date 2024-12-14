@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Containers/Set.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -16,12 +15,12 @@ struct ToSet_fn
 	template <typename RangeType>
 	[[nodiscard]] constexpr auto operator()(RangeType&& Range) const
 	{
-		using T = std::ranges::range_value_t<RangeType>;
+		using T = ranges::range_value_t<RangeType>;
 		TSet<T> Set;
 
-		if constexpr (std::ranges::sized_range<RangeType>)
+		if constexpr (ranges::sized_range<RangeType>)
 		{
-			Set.Reserve(std::ranges::distance(Range));
+			Set.Reserve(ranges::distance(Range));
 		}
 
 		for (auto&& X : Range)
@@ -43,7 +42,7 @@ struct ToSet_fn
  */
 [[nodiscard]] inline constexpr auto ToSet()
 {
-	return std::ranges::_Range_closure<_IGRP ToSet_fn>{};
+	return ranges::make_view_closure(_IGRP ToSet_fn{});
 }
 
 /**
@@ -56,7 +55,7 @@ struct ToSet_fn
 template <typename TransformT>
 [[nodiscard]] constexpr auto ToSet(TransformT&& Trans)
 {
-	return std::views::transform(std::forward<TransformT>(Trans))
+	return ranges::views::transform(std::forward<TransformT>(Trans))
 		 | IG::Ranges::ToSet();
 }
 

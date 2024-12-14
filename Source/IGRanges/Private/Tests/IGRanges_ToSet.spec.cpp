@@ -3,7 +3,8 @@
 #include "IGRanges/ToSet.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
+#include "view/empty.hpp"
+#include "view/transform.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -26,7 +27,7 @@ void FIGRangesToSetSpec::Define()
 
 	// `ToSet` with an empty range produces a set with zero count.
 	It("empty", [this]() {
-		const TSet<int32> TestMe = std::ranges::empty_view<int32>() | ToSet();
+		const TSet<int32> TestMe = ranges::empty_view<int32>() | ToSet();
 		TestSet(TestMe, {});
 	});
 
@@ -57,7 +58,7 @@ void FIGRangesToSetSpec::Define()
 			ExpectedSet.Emplace(Square(X));
 		}
 
-		TSet<int32> TestMe = SomeValues | std::views::transform(Square) | ToSet();
+		TSet<int32> TestMe = SomeValues | ranges::views::transform(Square) | ToSet();
 		TestSet(TestMe, ExpectedSet);
 
 		TestMe = SomeValues | ToSet(Square);

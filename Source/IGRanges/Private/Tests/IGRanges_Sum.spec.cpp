@@ -3,9 +3,9 @@
 #include "IGRanges/Sum.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <functional>
 #include <numeric>
-#include <ranges>
+
+#include "view/empty.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -17,19 +17,19 @@ void FIGRangesSumSpec::Define()
 
 	It("empty", [this]() {
 		{
-			const int32 ActualSum = std::ranges::empty_view<int32>() | Sum();
+			const int32 ActualSum = ranges::empty_view<int32>() | Sum();
 			TestEqual("sum int32", ActualSum, 0);
 		}
 		{
-			const FVector ActualSum = std::ranges::empty_view<FVector>() | Sum();
+			const FVector ActualSum = ranges::empty_view<FVector>() | Sum();
 			TestEqual("sum FVector", ActualSum, FVector::ZeroVector);
 		}
 		{
-			const FQuat ActualSum = std::ranges::empty_view<FQuat>() | Sum();
+			const FQuat ActualSum = ranges::empty_view<FQuat>() | Sum();
 			TestEqual("sum FQuat", ActualSum, FQuat::Identity);
 		}
 		{
-			const FString ActualSum = std::ranges::empty_view<FString>() | Sum();
+			const FString ActualSum = ranges::empty_view<FString>() | Sum();
 			TestEqual("sum FString", ActualSum, FString{});
 		}
 	});

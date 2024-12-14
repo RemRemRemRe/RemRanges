@@ -5,7 +5,11 @@
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
 #include <functional>
-#include <ranges>
+
+#include "algorithm/all_of.hpp"
+#include "algorithm/any_of.hpp"
+#include "algorithm/none_of.hpp"
+#include "view/empty.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -34,15 +38,15 @@ void TestRange(const RangeType& Range)
 {
 	using namespace IG::Ranges;
 
-	const bool bExpectedAll = std::ranges::all_of(Range, [](auto&& x) { return !!x; });
+	const bool bExpectedAll = ranges::all_of(Range, [](auto&& x) { return !!x; });
 	const bool bActualAll = Range | All();
 	TestEqual("all", bActualAll, bExpectedAll);
 
-	const bool bExpectedAny = std::ranges::any_of(Range, AlwaysTrue);
+	const bool bExpectedAny = ranges::any_of(Range, AlwaysTrue);
 	const bool bActualAny = Range | Any();
 	TestEqual("any", bExpectedAny, bExpectedAny);
 
-	const bool bExpectedNone = std::ranges::none_of(Range, [](auto&& x) { return !!x; });
+	const bool bExpectedNone = ranges::none_of(Range, [](auto&& x) { return !!x; });
 	const bool bActualNone = Range | None();
 	TestEqual("none", bActualNone, bActualNone);
 }
@@ -52,15 +56,15 @@ void TestRange(const RangeType& Range, const PredicateT& Predicate)
 {
 	using namespace IG::Ranges;
 
-	const bool bExpectedAll = std::ranges::all_of(Range, Predicate);
+	const bool bExpectedAll = ranges::all_of(Range, Predicate);
 	const bool bActualAll = Range | All(Predicate);
 	TestEqual("all", bActualAll, bExpectedAll);
 
-	const bool bExpectedAny = std::ranges::any_of(Range, Predicate);
+	const bool bExpectedAny = ranges::any_of(Range, Predicate);
 	const bool bActualAny = Range | Any(Predicate);
 	TestEqual("any", bActualAny, bExpectedAny);
 
-	const bool bExpectedNone = std::ranges::none_of(Range, Predicate);
+	const bool bExpectedNone = ranges::none_of(Range, Predicate);
 	const bool bActualNone = Range | None(Predicate);
 	TestEqual("none", bActualNone, bActualNone);
 }
@@ -80,7 +84,7 @@ void FIGRangesAllAnyNoneSpec::Define()
 	const TSharedPtr<int32> SomePointers[] = {nullptr, A, B, C, D, nullptr, nullptr, D, A, D};
 
 	It("empty (int32)", [this]() {
-		auto Empty = std::ranges::empty_view<int32>();
+		auto Empty = ranges::empty_view<int32>();
 		TestRange(Empty);
 		TestRange(Empty, AlwaysTrue);
 		TestRange(Empty, AlwaysFalse);
@@ -89,7 +93,7 @@ void FIGRangesAllAnyNoneSpec::Define()
 	});
 
 	It("empty (shared ptr)", [this]() {
-		auto Empty = std::ranges::empty_view<TSharedPtr<int32>>();
+		auto Empty = ranges::empty_view<TSharedPtr<int32>>();
 		TestRange(Empty);
 		TestRange(Empty, AlwaysTrue);
 		TestRange(Empty, AlwaysFalse);

@@ -10,6 +10,8 @@ public class IGRanges : ModuleRules
 		{
 			"Core",
 			"CoreUObject",
+
+			"RemRanges",
 		});
 	}
 }

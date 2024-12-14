@@ -4,7 +4,8 @@
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
 #include <numeric>
-#include <ranges>
+#include "view/empty.hpp"
+#include"action/action.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -26,7 +27,7 @@ void FIGRangesAccumulateSpec::Define()
 	It("empty", [this]() {
 		const int32* Empty = nullptr;
 		const FString ExpectedAccumulate = std::accumulate(Empty, Empty, Seed, Fold);
-		const FString ActualAccumulate = std::ranges::empty_view<int32>() | Accumulate(Seed, Fold);
+		const FString ActualAccumulate = ranges::empty_view<int32>() | Accumulate(Seed, Fold);
 		TestEqual("accumulate", ActualAccumulate, ExpectedAccumulate);
 	});
 

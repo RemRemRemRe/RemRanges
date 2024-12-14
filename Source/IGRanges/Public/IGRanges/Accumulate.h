@@ -3,9 +3,10 @@
 #pragma once
 
 #include <numeric>
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "functional/bind_back.hpp"
+#include "view/view.hpp"
 
 namespace IG::Ranges
 {
@@ -41,14 +42,8 @@ struct Accumulate_fn
 template <typename T, typename FoldType>
 [[nodiscard]] constexpr auto Accumulate(T&& Seed, FoldType&& Fold)
 {
-	return std::ranges::_Range_closure<
-		_IGRP Accumulate_fn,
-		std::decay_t<T>,
-		std::decay_t<FoldType>> //
-		{
-			std::forward<T>(Seed),
-			std::forward<FoldType>(Fold),
-		};
+	return ranges::make_view_closure(ranges::bind_back(
+		_IGRP Accumulate_fn{}, std::forward<T>(Seed), std::forward<FoldType>(Fold)));
 }
 
 } // namespace IG::Ranges

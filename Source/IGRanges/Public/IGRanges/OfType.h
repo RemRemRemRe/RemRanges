@@ -5,7 +5,6 @@
 #include "IGRanges/Cast.h"
 #include "UObject/SoftObjectPtr.h"
 #include "UObject/WeakObjectPtrTemplates.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -38,12 +37,12 @@ template <typename T>
 
 [[nodiscard]] inline constexpr auto Dereference()
 {
-	return std::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+	return ranges::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
 }
 
 [[nodiscard]] inline constexpr auto NonNull()
 {
-	return std::views::filter([](const void* x) { return x != nullptr; });
+	return ranges::views::filter([](const void* x) { return x != nullptr; });
 }
 
 } // namespace Private
@@ -97,7 +96,7 @@ template <class T>
  */
 [[nodiscard]] inline constexpr auto OfType(const UClass* Class)
 {
-	return std::views::filter([Class](auto&& x) { return _IGRP IsA(x, Class); });
+	return ranges::views::filter([Class](auto&& x) { return _IGRP IsA(x, Class); });
 }
 
 /**

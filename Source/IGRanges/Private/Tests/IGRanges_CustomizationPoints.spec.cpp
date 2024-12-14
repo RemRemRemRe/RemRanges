@@ -3,7 +3,8 @@
 #include "IGRanges/CustomizationPoints.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
+#include "view/filter.hpp"
+#include "view/transform.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -18,20 +19,20 @@ static void CheckCompat(auto&& Container)
 {
 	UE_LOG(LogIGRangesTests, Verbose, TEXT("%hs"), __FUNCSIG__);
 
-	const bool bIsEmpty = std::ranges::empty(Container);
+	const bool bIsEmpty = ranges::empty(Container);
 	UE_LOG(LogIGRangesTests, Verbose, TEXT("IsEmpty=%s"), bIsEmpty ? TEXT("true") : TEXT("false"));
 
-	const int32 Count = std::ranges::distance(Container);
+	const int32 Count = ranges::distance(Container);
 	UE_LOG(LogIGRangesTests, Verbose, TEXT("Count=%d"), Count);
 
-	auto EvenElements = Container | std::views::filter([](auto&& x) { return x % 2 == 0; });
+	auto EvenElements = Container | ranges::views::filter([](auto&& x) { return x % 2 == 0; });
 
-	auto SquaredElements = Container | std::views::transform([](auto&& x) { return x * x; });
+	auto SquaredElements = Container | ranges::views::transform([](auto&& x) { return x * x; });
 
 	auto Sqevens =
 		Container
-		| std::views::filter([](auto&& x) { return x % 2 == 0; })
-		| std::views::transform([](auto&& x) { return x * x; });
+		| ranges::views::filter([](auto&& x) { return x % 2 == 0; })
+		| ranges::views::transform([](auto&& x) { return x * x; });
 	for (const int32 X : Sqevens)
 	{
 		UE_LOG(LogIGRangesTests, Verbose, TEXT("X=%d"), X);

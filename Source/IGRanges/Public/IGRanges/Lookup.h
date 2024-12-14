@@ -3,7 +3,6 @@
 #pragma once
 
 #include "IGRanges/NonNull.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -63,7 +62,7 @@ template <typename ContainerType>
 template <typename ContainerType>
 [[nodiscard]] constexpr auto Lookup(ContainerType& Container)
 {
-	return std::views::transform(_IGRP LookupIn(Container)) | _IGR NonNull();
+	return ranges::views::transform(_IGRP LookupIn(Container)) | _IGR NonNull();
 }
 
 /**
@@ -79,7 +78,7 @@ template <typename ContainerType>
 template <typename ContainerType>
 [[nodiscard]] constexpr auto LookupRef(ContainerType& Container)
 {
-	return std::views::transform(_IGRP LookupIn(Container)) | _IGR NonNullRef();
+	return ranges::views::transform(_IGRP LookupIn(Container)) | _IGR NonNullRef();
 }
 
 } // namespace IG::Ranges

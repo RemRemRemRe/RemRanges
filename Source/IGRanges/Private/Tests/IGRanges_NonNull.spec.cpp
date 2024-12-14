@@ -3,7 +3,6 @@
 #include "IGRanges/NonNull.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -16,7 +15,7 @@ template <typename RangeType>
 bool TestPointers(const RangeType& Range)
 {
 	using namespace IG::Ranges;
-	using T = std::ranges::range_value_t<RangeType>;
+	using T = ranges::range_value_t<RangeType>;
 
 	TArray<T> ExpectedPointers;
 	for (auto&& X : Range)
@@ -46,7 +45,7 @@ bool TestRefs(const RangeType& Range)
 {
 	using namespace IG::Ranges;
 
-	using T = std::ranges::range_value_t<RangeType>;
+	using T = ranges::range_value_t<RangeType>;
 
 	TArray<T> ExpectedPointers;
 	for (auto&& X : Range)
@@ -111,7 +110,7 @@ void FIGRangesNonNullSpec::Define()
 		TSharedPtr<int32> D = MakeShared<int32>(4);
 		const TSharedPtr<int32> SomePointers[] = {nullptr, A, B, C, D, nullptr, nullptr, D, A, D};
 
-		auto SomeWeakPointers = SomePointers | std::views::transform([](auto&& x) { return x.ToWeakPtr(); });
+		auto SomeWeakPointers = SomePointers | ranges::views::transform([](auto&& x) { return x.ToWeakPtr(); });
 		TestPointers(SomeWeakPointers);
 	});
 
@@ -144,7 +143,7 @@ void FIGRangesNonNullSpec::Define()
 		TSharedPtr<int32> C = MakeShared<int32>(3);
 		TSharedPtr<int32> D = MakeShared<int32>(4);
 		const TSharedPtr<int32> SomePointers[] = {nullptr, A, B, C, D, nullptr, nullptr, D, A, D};
-		auto SomeWeakPointers = SomePointers | std::views::transform([](auto&& x) { return x.ToWeakPtr(); });
+		auto SomeWeakPointers = SomePointers | ranges::views::transform([](auto&& x) { return x.ToWeakPtr(); });
 
 		TestRefs(SomeWeakPointers);
 	});

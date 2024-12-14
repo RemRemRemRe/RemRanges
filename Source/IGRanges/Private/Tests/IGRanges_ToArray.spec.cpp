@@ -3,7 +3,9 @@
 #include "IGRanges/ToArray.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
+#include "view/empty.hpp"
+#include "view/filter.hpp"
+#include "view/transform.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -30,7 +32,7 @@ void FIGRangesToArraySpec::Define()
 
 	// `ToArray` with an empty range produces an array with zero count & capacity.
 	It("empty", [this]() {
-		const TArray<int32> TestMe = std::ranges::empty_view<int32>() | ToArray();
+		const TArray<int32> TestMe = ranges::empty_view<int32>() | ToArray();
 		TestArray(TestMe, {});
 	});
 
@@ -58,7 +60,7 @@ void FIGRangesToArraySpec::Define()
 		}
 
 		// `ToArray` with 0 arguments (just creates an array from the view).
-		TArray<int32> TestMe = SomeValues | std::views::transform(Square) | ToArray();
+		TArray<int32> TestMe = SomeValues | ranges::views::transform(Square) | ToArray();
 		TestArray(TestMe, ExpectedArray);
 
 		// `ToArray` with transformation argument (applies the transformation).
@@ -82,7 +84,7 @@ void FIGRangesToArraySpec::Define()
 			}
 		}
 
-		const TArray<int32> TestMe = SomeValues | std::views::filter(IsEven) | ToArray();
+		const TArray<int32> TestMe = SomeValues | ranges::views::filter(IsEven) | ToArray();
 		TestArray(TestMe, ExpectedArray);
 	});
 }

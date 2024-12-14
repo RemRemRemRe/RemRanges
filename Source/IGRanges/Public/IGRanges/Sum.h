@@ -3,7 +3,6 @@
 #pragma once
 
 #include "IGRanges/Impl/Common.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -16,7 +15,7 @@ struct Sum_fn
 	template <typename RangeType>
 	[[nodiscard]] constexpr auto operator()(RangeType&& Range) const
 	{
-		using T = std::ranges::range_value_t<RangeType>;
+		using T = ranges::range_value_t<RangeType>;
 
 		auto It = std::begin(Range);
 		const auto& End = std::end(Range);
@@ -51,7 +50,7 @@ struct Sum_fn
  */
 [[nodiscard]] inline constexpr auto Sum()
 {
-	return std::ranges::_Range_closure<_IGRP Sum_fn>{};
+	return ranges::make_view_closure(_IGRP Sum_fn{});
 }
 
 /**
@@ -65,7 +64,7 @@ struct Sum_fn
 template <typename TransformT>
 [[nodiscard]] constexpr auto Sum(TransformT&& Trans)
 {
-	return std::views::transform(std::forward<TransformT>(Trans))
+	return ranges::views::transform(std::forward<TransformT>(Trans))
 		 | _IGR Sum();
 }
 

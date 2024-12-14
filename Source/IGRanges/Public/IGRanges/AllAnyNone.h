@@ -3,8 +3,6 @@
 #pragma once
 
 #include "IGRanges/Impl/Common.h"
-#include <algorithm>
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -43,7 +41,7 @@ struct Algo_fn
 template <EAlgoChoice _Choice, class _Pr>
 [[nodiscard]] constexpr auto ChooseAlgo(_Pr&& _Pred)
 {
-	return std::ranges::_Range_closure<Algo_fn<_Choice>, std::decay_t<_Pr>>{std::forward<_Pr>(_Pred)};
+	return ranges::make_view_closure(ranges::bind_back(Algo_fn<_Choice>{}, std::forward<_Pr>(_Pred)));
 }
 
 } // namespace Private

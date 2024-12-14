@@ -3,9 +3,11 @@
 #pragma once
 
 #include "HAL/Platform.h" // `int32`
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "iterator/operations.hpp"
+#include "view/view.hpp"
+#include "view/filter.hpp"
 
 namespace IG::Ranges
 {
@@ -16,7 +18,7 @@ struct Count_fn
 	template <typename RangeType>
 	[[nodiscard]] constexpr auto operator()(RangeType&& Range) const
 	{
-		return static_cast<int32>(std::ranges::distance(std::forward<RangeType>(Range)));
+		return static_cast<int32>(ranges::distance(std::forward<RangeType>(Range)));
 	}
 };
 
@@ -30,7 +32,7 @@ struct Count_fn
  */
 [[nodiscard]] inline constexpr auto Count()
 {
-	return std::ranges::_Range_closure<_IGRP Count_fn>{};
+	return ranges::make_view_closure(_IGRP Count_fn{});
 }
 
 /**
@@ -43,7 +45,7 @@ struct Count_fn
 template <class _Pr>
 [[nodiscard]] constexpr auto Count(_Pr&& _Pred)
 {
-	return std::views::filter(std::forward<_Pr>(_Pred))
+	return ranges::views::filter(std::forward<_Pr>(_Pred))
 		 | _IGR Count();
 }
 

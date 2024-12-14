@@ -3,7 +3,6 @@
 #pragma once
 
 #include "IGRanges/NonNull.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
 
@@ -12,7 +11,7 @@ namespace IG::Ranges
 /**
  * Projects each element of a sequence into a new form.
  *
- * Alias for `std::views::transform`:
+ * Alias for `ranges::views::transform`:
  * A range adaptor that represents view of an underlying sequence after applying a transformation function to each element.
  *
  * @usage
@@ -24,7 +23,7 @@ namespace IG::Ranges
 template <class _Fn>
 [[nodiscard]] constexpr auto Select(_Fn&& _Fun)
 {
-	return std::views::transform(std::forward<_Fn>(_Fun));
+	return ranges::views::transform(std::forward<_Fn>(_Fun));
 }
 
 /**
@@ -40,7 +39,7 @@ template <class _Fn>
 template <class _Fn>
 [[nodiscard]] constexpr auto SelectNonNull(_Fn&& _Fun)
 {
-	return std::views::transform(std::forward<_Fn>(_Fun)) | _IGR NonNull();
+	return ranges::views::transform(std::forward<_Fn>(_Fun)) | _IGR NonNull();
 }
 
 } // namespace IG::Ranges

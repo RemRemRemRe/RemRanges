@@ -2,17 +2,15 @@
 
 #pragma once
 
-#include <functional>
-#include <ranges>
-
 #include "IGRanges/Impl/Prologue.inl"
+#include "view/filter.hpp"
 
 namespace IG::Ranges
 {
 /**
  * Filters a sequence of values based on a predicate.
  *
- * Alias for `std::views::filter`:
+ * Alias for `ranges::views::filter`:
  * A range adaptor that represents view of an underlying sequence without the elements that fail to satisfy a predicate.
  *
  * @usage
@@ -24,7 +22,7 @@ namespace IG::Ranges
 template <class _Pr>
 [[nodiscard]] constexpr auto Where(_Pr&& _Pred)
 {
-	return std::views::filter(std::forward<_Pr>(_Pred));
+	return ranges::views::filter(std::forward<_Pr>(_Pred));
 }
 
 /**
@@ -39,7 +37,7 @@ template <class _Pr>
 template <class _Pr>
 [[nodiscard]] constexpr auto SafeWhere(_Pr _Pred)
 {
-	return std::views::filter([Pred = std::move(_Pred)]<typename T>(T&& x) {
+	return ranges::views::filter([Pred = std::move(_Pred)]<typename T>(T&& x) {
 		return x != nullptr && std::invoke(Pred, std::forward<T>(x));
 	});
 }
@@ -50,7 +48,7 @@ template <class _Pr>
 template <class _Pr>
 [[nodiscard]] constexpr auto WhereNot(_Pr&& _Pred)
 {
-	return std::views::filter(std::not_fn(std::forward<_Pr>(_Pred)));
+	return ranges::views::filter(std::not_fn(std::forward<_Pr>(_Pred)));
 }
 
 /**

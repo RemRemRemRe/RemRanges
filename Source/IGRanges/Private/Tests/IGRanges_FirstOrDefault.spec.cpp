@@ -3,7 +3,7 @@
 #include "IGRanges/FirstOrDefault.h"
 #include "IGRangesInternal.h"
 #include "Misc/AutomationTest.h"
-#include <ranges>
+#include "view/empty.hpp"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -95,19 +95,19 @@ void FIGRangesFirstOrDefaultSpec::Define()
 	const TSharedPtr<int32> SomePointers[] = {nullptr, A, B, C, D, nullptr, nullptr, D, A, D};
 
 	It("empty (int32)", [this]() {
-		TestRange("default", std::ranges::empty_view<int32>(), 0);
+		TestRange("default", ranges::empty_view<int32>(), 0);
 	});
 
 	It("empty (struct)", [this]() {
-		TestRange("default FMyNumber", std::ranges::empty_view<FMyNumber>(), FMyNumber{});
+		TestRange("default FMyNumber", ranges::empty_view<FMyNumber>(), FMyNumber{});
 		// Test that `FVector` returns "zero" instead of uninitialized.
-		TestRange("default FVector", std::ranges::empty_view<FVector>(), FVector::ZeroVector);
+		TestRange("default FVector", ranges::empty_view<FVector>(), FVector::ZeroVector);
 		// Test that `FQuat` returns "identity" instead of uninitialized.
-		TestRange("default FQuat", std::ranges::empty_view<FQuat>(), FQuat::Identity);
+		TestRange("default FQuat", ranges::empty_view<FQuat>(), FQuat::Identity);
 	});
 
 	It("empty (shared ptr)", [this]() {
-		TestRange("default", std::ranges::empty_view<TSharedPtr<int32>>(), TSharedPtr<int32>{});
+		TestRange("default", ranges::empty_view<TSharedPtr<int32>>(), TSharedPtr<int32>{});
 	});
 
 	It("many (int32)", [this]() {

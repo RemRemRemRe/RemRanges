@@ -3,9 +3,12 @@
 #pragma once
 
 #include "Templates/SharedPointer.h"
-#include <ranges>
 
 #include "IGRanges/Impl/Prologue.inl"
+#include "algorithm/equal_range.hpp"
+#include "view/view.hpp"
+#include "view/filter.hpp"
+#include "view/transform.hpp"
 
 namespace IG::Ranges
 {
@@ -16,19 +19,19 @@ struct NonNullRef_fn
 	template <typename RangeType>
 	[[nodiscard]] constexpr auto operator()(RangeType&& Range) const
 	{
-		using T = std::ranges::range_value_t<RangeType>;
+		using T = ranges::range_value_t<RangeType>;
 
 		if constexpr (TIsTWeakPtr_V<T>) // Support for `TWeakPtr`
 		{
 			return std::forward<RangeType>(Range)
-				 | std::views::filter([](auto&& x) { return x.IsValid(); })
-				 | std::views::transform([](auto&& x) -> T::ElementType& { return *x.Pin().Get(); });
+				 | ranges::views::filter([](auto&& x) { return x.IsValid(); })
+				 | ranges::views::transform([](auto&& x) -> T::ElementType& { return *x.Pin().Get(); });
 		}
 		else
 		{
 			return std::forward<RangeType>(Range)
-				 | std::views::filter([](auto&& x) { return x != nullptr; })
-				 | std::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+				 | ranges::views::filter([](auto&& x) { return x != nullptr; })
+				 | ranges::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
 		}
 	}
 };
@@ -42,7 +45,7 @@ struct NonNullRef_fn
  */
 [[nodiscard]] inline constexpr auto NonNull()
 {
-	return std::views::filter([]<typename T>(T&& x) {
+	return ranges::views::filter([]<typename T>(T&& x) {
 		if constexpr (TIsTWeakPtr_V<T>) // Support for `TWeakPtr`
 		{
 			return x.IsValid();
@@ -59,7 +62,7 @@ struct NonNullRef_fn
  */
 [[nodiscard]] inline constexpr auto NonNullRef()
 {
-	return std::ranges::_Range_closure<_IGRP NonNullRef_fn>{};
+	return ranges::make_view_closure(_IGRP NonNullRef_fn{});
 }
 
 } // namespace IG::Ranges
