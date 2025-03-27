@@ -11,12 +11,13 @@ public class IGRanges : ModuleRules
 		bEnableNonInlinedGenCppWarnings = true;
 		bUseUnity = false;
 
-		PublicDependencyModuleNames.AddRange(new[]
-		{
-			"Core",
-			"CoreUObject",
+		PublicDependencyModuleNames.AddRange(
+			[
+				"Core",
+				"CoreUObject",
 
-			"RemRanges",
-		});
+				"RemRanges",
+			]
+		);
 	}
 }

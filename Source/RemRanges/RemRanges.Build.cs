@@ -17,15 +17,14 @@ public class RemRanges : ModuleRules
 		bUseUnity = false;
 
 		PrivateDependencyModuleNames.AddRange(
-			new[]
-			{
+			[
 				"Core",
 				"CoreUObject",
 				"Engine",
 
 				"DeveloperSettings",
 				"RemCommon",
-			}
+			]
 		);
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include/"));
