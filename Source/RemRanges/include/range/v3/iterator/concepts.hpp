@@ -192,7 +192,7 @@ namespace ranges
 
         // gcc10 uses for std::ranges::range_difference_t<
         // std::ranges::iota_view<size_t, size_t>> == __int128
-#if __SIZEOF_INT128__
+#if defined(__SIZEOF_INT128__) && __SIZEOF_INT128__
         __extension__ typedef __int128 int128_t;
 #if RANGES_CXX_INLINE_VARIABLES >= RANGES_CXX_INLINE_VARIABLES_17
         template<>
