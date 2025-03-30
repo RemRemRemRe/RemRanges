@@ -14,6 +14,7 @@ namespace IG::Ranges
 {
 namespace Private
 {
+template<bool bValidate>
 struct NonNullRef_fn
 {
 	template <typename RangeType>
@@ -23,15 +24,31 @@ struct NonNullRef_fn
 
 		if constexpr (TIsTWeakPtr_V<T>) // Support for `TWeakPtr`
 		{
-			return std::forward<RangeType>(Range)
-				 | ranges::views::filter([](auto&& x) { return x.IsValid(); })
-				 | ranges::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
+			if constexpr (bValidate)
+			{
+				return std::forward<RangeType>(Range)
+					 | ranges::views::filter([](auto&& x) { return x.IsValid(); })
+					 | ranges::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
+			}
+			else
+			{
+				return std::forward<RangeType>(Range)
+					 | ranges::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
+			}
 		}
 		else
 		{
-			return std::forward<RangeType>(Range)
-				 | ranges::views::filter([](auto&& x) { return x != nullptr; })
-				 | ranges::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+			if constexpr (bValidate)
+			{
+				return std::forward<RangeType>(Range)
+					 | ranges::views::filter([](auto&& x) { return x != nullptr; })
+					 | ranges::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+			}
+			else
+			{
+				return std::forward<RangeType>(Range)
+					 | ranges::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+			}
 		}
 	}
 };
@@ -62,7 +79,15 @@ struct NonNullRef_fn
  */
 [[nodiscard]] inline constexpr auto NonNullRef()
 {
-	return ranges::make_view_closure(_IGRP NonNullRef_fn{});
+	return ranges::make_view_closure(_IGRP NonNullRef_fn<true>{});
+}
+
+/**
+ * Same as `NonNull` but yields references to values instead of pointers and skipping validation
+ */
+[[nodiscard]] inline constexpr auto NonNullRefChecked()
+{
+	return ranges::make_view_closure(_IGRP NonNullRef_fn<false>{});
 }
 
 } // namespace IG::Ranges
