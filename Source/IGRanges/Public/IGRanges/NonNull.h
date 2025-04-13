@@ -25,12 +25,12 @@ struct NonNullRef_fn
 			{
 				return std::forward<RangeType>(Range)
 					 | std::views::filter([](auto&& x) { return x.IsValid(); })
-					 | std::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
+					 | std::views::transform([](auto&& x) -> decltype(auto) { return std::ref(*x.Pin().Get()); });
 			}
 			else
 			{
 				return std::forward<RangeType>(Range)
-					 | std::views::transform([](auto&& x) -> typename T::ElementType& { return *x.Pin().Get(); });
+					 | std::views::transform([](auto&& x) -> decltype(auto) { return std::ref(*x.Pin().Get()); });
 			}
 		}
 		else
@@ -39,12 +39,12 @@ struct NonNullRef_fn
 			{
 				return std::forward<RangeType>(Range)
 					 | std::views::filter([](auto&& x) { return x != nullptr; })
-					 | std::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+					 | std::views::transform([](auto&& x) -> decltype(auto) { return std::ref(*x); });
 			}
 			else
 			{
 				return std::forward<RangeType>(Range)
-					 | std::views::transform([](auto&& x) -> decltype(*x)& { return *x; });
+					 | std::views::transform([](auto&& x) -> decltype(auto) { return std::ref(*x); });
 			}
 		}
 	}
