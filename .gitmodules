@@ -1,0 +1,3 @@
+[submodule "Source/RemRanges/include/transrangers"]
+	path = Source/ThirdParty/transrangers
+	url = https://github.com/joaquintides/transrangers.git
