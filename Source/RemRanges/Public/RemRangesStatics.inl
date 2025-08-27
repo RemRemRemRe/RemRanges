@@ -15,12 +15,12 @@ namespace Rem::Ranges
 	{
 		return std::ref(*Pointer);
 	}
-
-
+	
 	template<typename TRanger>
 	void ForEach(TRanger Ranger)
 	{
-		for (auto&& Iter : transrangers::input_view(std::move(Ranger)))
+		auto View = transrangers::input_view(std::move(Ranger));
+		for (auto Iter = View.begin(); Iter != View.end(); ++Iter)
 		{
 		}
 	}
@@ -28,9 +28,10 @@ namespace Rem::Ranges
 	template<typename TRanger, typename TFunctor>
 	void ForEach(TRanger Ranger, TFunctor Functor)
 	{
-		for (auto&& Iter : transrangers::input_view(std::move(Ranger)))
+		auto View = transrangers::input_view(std::move(Ranger));
+		for (auto Iter = View.begin(); Iter != View.end(); ++Iter)
 		{
-			Functor(std::forward<decltype(Iter)>(std::move(Iter)));
+			Functor(std::forward<decltype(*Iter)>(std::move(*Iter)));
 		}
 	}
 
@@ -38,9 +39,9 @@ namespace Rem::Ranges
 	requires Rem::is_instance_v<ArrayType, TArray>
 	void ToArray(ArrayType& OutArray, TRanger Ranger)
 	{
-		ForEach(std::move(Ranger), [&](auto&& Iter)
+		ForEach(std::move(Ranger), [&](auto&& Value)
 		{
-			OutArray.Add(std::forward<ArrayType::ElementType>(Iter));
+			OutArray.Add(std::forward<ArrayType::ElementType>(std::move(Value)));
 		});
 	}
 }
