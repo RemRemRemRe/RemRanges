@@ -1,1 +1,1 @@
-make [transrangers](https://github.com/joaquintides/transrangers/) from joaquintides an unreal engine plugin
+bring [transrangers](https://github.com/joaquintides/transrangers) from joaquintides as a plugin for UnrealEngine 
