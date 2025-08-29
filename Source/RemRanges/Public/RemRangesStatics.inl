@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe. 2025. All Rights Reserved.
+// Copyright RemRemRemRe. 2025. All Rights Reserved.
 
 #pragma once
 
@@ -19,20 +19,20 @@ namespace Rem::Ranges
 	template<typename TRanger>
 	void ForEach(TRanger Ranger)
 	{
-		auto View = transrangers::input_view(std::move(Ranger));
-		for (auto Iter = View.begin(); Iter != View.end(); ++Iter)
-		{
-		}
+	    Ranger([&](auto)
+        {
+            return true;
+        });
 	}
 
 	template<typename TRanger, typename TFunctor>
 	void ForEach(TRanger Ranger, TFunctor Functor)
 	{
-		auto View = transrangers::input_view(std::move(Ranger));
-		for (auto Iter = View.begin(); Iter != View.end(); ++Iter)
-		{
-			Functor(std::forward<decltype(*Iter)>(std::move(*Iter)));
-		}
+        Ranger([&](auto Iter)
+        {
+            Functor(std::forward<decltype(*Iter)>(std::move(*Iter)));
+            return true;
+        });
 	}
 
 	template<typename TRanger, typename ArrayType>
