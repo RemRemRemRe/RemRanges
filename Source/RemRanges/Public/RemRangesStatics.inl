@@ -34,7 +34,7 @@ namespace Rem::Ranges
             return true;
         });
 	}
-
+    
 	template<typename TRanger, typename ArrayType>
 	requires Rem::is_instance_v<ArrayType, TArray>
 	void ToArray(ArrayType& OutArray, TRanger Ranger)
@@ -44,4 +44,18 @@ namespace Rem::Ranges
 			OutArray.Add(std::forward<ArrayType::ElementType>(std::move(Value)));
 		});
 	}
+
+    template<typename ArrayType>
+	requires Rem::is_instance_v<ArrayType, TArray>
+    auto ArrayView(ArrayType&& Array)
+    {
+        return transrangers::all(MakeArrayView(Array));
+    }
+
+    template<typename ArrayType>
+    requires Rem::is_instance_v<ArrayType, TArray>
+    auto ConstArrayView(ArrayType&& Array)
+    {
+        return transrangers::all(MakeConstArrayView(Array));
+    }
 }
