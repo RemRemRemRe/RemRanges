@@ -5,18 +5,20 @@
 #include <type_traits>
 #include "Templates/RemIsInstance.h"
 
-#include "transranger_view.hpp"
 #include "transrangers.hpp"
 
 namespace Rem::Ranges
 {
+    template<class TRanger>
+    concept is_ranger = Rem::is_instance_v<TRanger, transrangers::ranger_class>;
+    
 	template<typename T>
 	auto MakeRefChecked(T* Pointer)
 	{
 		return std::ref(*Pointer);
 	}
-	
-	template<typename TRanger>
+
+	template<is_ranger TRanger>
 	void ForEach(TRanger Ranger)
 	{
 	    Ranger([&](auto)
@@ -25,7 +27,7 @@ namespace Rem::Ranges
         });
 	}
 
-	template<typename TRanger, typename TFunctor>
+	template<is_ranger TRanger, typename TFunctor>
 	void ForEach(TRanger Ranger, TFunctor Functor)
 	{
         Ranger([&](auto Iter)
@@ -37,7 +39,7 @@ namespace Rem::Ranges
     
     // TODO walkaround for
     // transrangers::take(1) SOMETIMES causing "Error C1060 : compiler is out of heap space" on MSVC 14.44.35207 Windows 10.0.26100.0 SDK
-    template<uint32 Count, typename TRanger>
+    template<uint32 Count, is_ranger TRanger>
 	void Take(TRanger Ranger)
 	{
 	    static_assert(Count > 0, "Count must be greater than 0");
@@ -55,7 +57,7 @@ namespace Rem::Ranges
         });
 	}
 
-	template<typename TRanger, typename ArrayType>
+	template<is_ranger TRanger, typename ArrayType>
 	requires Rem::is_instance_v<ArrayType, TArray>
 	void ToArray(ArrayType& OutArray, TRanger Ranger)
 	{
