@@ -60,7 +60,7 @@ namespace Rem::Ranges
 	{
 		ForEach(std::move(Ranger), [&](auto&& Value)
 		{
-			OutArray.Add(std::forward<ArrayType::ElementType>(std::move(Value)));
+			OutArray.Add(std::forward<typename ArrayType::ElementType>(std::move(Value)));
 		});
 	}
 
