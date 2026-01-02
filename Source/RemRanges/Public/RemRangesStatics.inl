@@ -33,26 +33,6 @@ namespace Rem::Ranges
             return true;
         });
 	}
-    
-    // TODO walkaround for
-    // transrangers::take(1) SOMETIMES causing "Error C1060 : compiler is out of heap space" on MSVC 14.44.35207 Windows 10.0.26100.0 SDK
-    template<uint32 Count, transrangers::is_ranger TRanger>
-	void Take(TRanger Ranger)
-	{
-	    static_assert(Count > 0, "Count must be greater than 0");
-	    
-	    uint32 Counter = Count;
-	    Ranger([&](auto)
-        {
-	        --Counter;
-            if (Counter > 0)
-            {
-                return true;
-            }
-	        
-            return false;
-        });
-	}
 
 	template<transrangers::is_ranger TRanger, typename ArrayType>
 	requires Rem::is_instance_v<ArrayType, TArray>
