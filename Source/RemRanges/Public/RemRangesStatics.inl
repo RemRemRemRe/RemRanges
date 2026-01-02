@@ -18,7 +18,7 @@ namespace Rem::Ranges
 	template<transrangers::is_ranger TRanger>
 	void ForEach(TRanger Ranger)
 	{
-	    Ranger([&](auto)
+	    Ranger([&](typename TRanger::cursor)
         {
             return true;
         });
@@ -27,9 +27,11 @@ namespace Rem::Ranges
 	template<transrangers::is_ranger TRanger, typename TFunctor>
 	void ForEach(TRanger Ranger, TFunctor Functor)
 	{
-        Ranger([&](auto Iter)
+	    using ValueType = transrangers::ranger_element_t<TRanger>;
+	    
+        Ranger([&](typename TRanger::cursor Iter)
         {
-            Functor(std::forward<decltype(*Iter)>(std::move(*Iter)));
+            Functor(std::forward<ValueType>(std::move(*Iter)));
             return true;
         });
 	}
@@ -38,9 +40,11 @@ namespace Rem::Ranges
 	requires Rem::is_instance_v<ArrayType, TArray>
 	void ToArray(ArrayType& OutArray, TRanger Ranger)
 	{
-		ForEach(std::move(Ranger), [&](auto&& Value)
+	    using ValueType = transrangers::ranger_element_t<TRanger>;
+	    
+		ForEach(std::move(Ranger), [&](ValueType&& Value)
 		{
-			OutArray.Add(std::forward<typename ArrayType::ElementType>(std::move(Value)));
+			OutArray.Add(std::forward<ValueType>(std::move(Value)));
 		});
 	}
 
