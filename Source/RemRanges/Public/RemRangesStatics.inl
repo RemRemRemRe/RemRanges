@@ -48,23 +48,25 @@ namespace Rem::Ranges
 		});
 	}
     
-    template<transrangers::is_ranger TRanger, typename ArrayType>
-	requires Rem::is_instance_v<ArrayType, TArray>
-	ArrayType ToArray(TRanger Ranger)
+    template<transrangers::is_ranger TRanger>
+	auto ToArray(TRanger Ranger) -> decltype(auto)
 	{
-	    ArrayType OutArray{};
+	    using ValueType = transrangers::ranger_element_t<TRanger>;
+	    
+	    TArray<ValueType> OutArray{};
 	    ToArray(OutArray, Ranger);
 	    
 	    return OutArray;
 	}
     
-    template<uint32 Count, transrangers::is_ranger TRanger, typename ArrayType>
-	requires Rem::is_instance_v<ArrayType, TArray>
-	ArrayType TakeN(TRanger Ranger)
+    template<uint32 Count, transrangers::is_ranger TRanger>
+	auto TakeN(TRanger Ranger) -> decltype(auto)
 	{
+	    using ValueType = transrangers::ranger_element_t<TRanger>;
+	    
 	    static_assert(Count > 0, "Count must be greater than 0");
 	    
-	    ArrayType OutArray{};
+	    TArray<ValueType> OutArray{};
 	    ToArray(OutArray, transrangers::take<Count>(Ranger));
 	    
 	    return OutArray;
