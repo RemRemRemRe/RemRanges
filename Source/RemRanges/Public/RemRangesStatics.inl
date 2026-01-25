@@ -5,6 +5,7 @@
 #include <type_traits>
 #include "Templates/RemIsInstance.h"
 #include "Macro/RemFunctorMacro.h"
+#include "RemMisc.h"
 
 #include "transrangers.hpp"
 
@@ -17,6 +18,13 @@ namespace Rem::Ranges
 	}
     REM_FUNCTION_TO_FUNCTOR_SIMPLE(MakeRefChecked)
 
+    template<transrangers::is_ranger TRanger>
+    auto GetValidRef(TRanger Ranger)
+	{
+	    return transrangers::transform(Fn::MakeRefChecked,
+	        transrangers::filter(Rem::Fn::IsValid, Ranger));
+	}
+    
 	template<transrangers::is_ranger TRanger>
 	void ForEach(TRanger Ranger)
 	{
