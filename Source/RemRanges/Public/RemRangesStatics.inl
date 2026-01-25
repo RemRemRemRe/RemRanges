@@ -4,6 +4,7 @@
 
 #include <type_traits>
 #include "Templates/RemIsInstance.h"
+#include "Macro/RemFunctorMacro.h"
 
 #include "transrangers.hpp"
 
@@ -14,6 +15,7 @@ namespace Rem::Ranges
 	{
 		return std::ref(*Pointer);
 	}
+    REM_FUNCTION_TO_FUNCTOR_SIMPLE(MakeRefChecked)
 
 	template<transrangers::is_ranger TRanger>
 	void ForEach(TRanger Ranger)
