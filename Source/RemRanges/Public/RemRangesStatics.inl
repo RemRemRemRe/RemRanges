@@ -6,6 +6,7 @@
 #include "Templates/RemIsInstance.h"
 #include "Macro/RemFunctorMacro.h"
 #include "RemMisc.h"
+#include "RemNotNull.h"
 
 #include "transrangers.hpp"
 
@@ -20,9 +21,9 @@ namespace Rem::Ranges
     REM_FUNCTION_TO_FUNCTOR_SIMPLE(MakeRefChecked)
 
     template <transrangers::is_ranger TRanger>
-    [[nodiscard]] constexpr auto GetValidRef(TRanger Ranger)
+    [[nodiscard]] constexpr auto GetNotNull(TRanger Ranger)
     {
-        return transrangers::transform(Fn::MakeRefChecked,
+        return transrangers::transform(Rem::Fn::MakeNotNull,
             transrangers::filter(Rem::Fn::IsValid, Ranger));
     }
 
