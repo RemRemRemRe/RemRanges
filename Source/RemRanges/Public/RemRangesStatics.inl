@@ -4,29 +4,11 @@
 
 #include <type_traits>
 #include "Templates/RemIsInstance.h"
-#include "Macro/RemFunctorMacro.h"
-#include "RemMisc.h"
-#include "RemNotNull.h"
 
 #include "transrangers.hpp"
 
 namespace Rem::Ranges
 {
-    template <typename T>
-    [[nodiscard]] constexpr auto MakeRefChecked(T* Pointer)
-    {
-        return std::ref(*Pointer);
-    }
-
-    REM_FUNCTION_TO_FUNCTOR_SIMPLE(MakeRefChecked)
-
-    template <transrangers::is_ranger TRanger>
-    [[nodiscard]] constexpr auto GetNotNull(TRanger Ranger)
-    {
-        return transrangers::transform(Rem::Fn::MakeNotNull,
-            transrangers::filter(Rem::Fn::IsValid, Ranger));
-    }
-
     template <transrangers::is_ranger TRanger>
     void ForEach(TRanger Ranger)
     {
