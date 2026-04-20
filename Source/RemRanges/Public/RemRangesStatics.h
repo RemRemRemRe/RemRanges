@@ -10,9 +10,8 @@
 UCLASS()
 class REM_API URemRangesStatics : public UBlueprintFunctionLibrary
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:
 };
 
 namespace Rem::Ranges

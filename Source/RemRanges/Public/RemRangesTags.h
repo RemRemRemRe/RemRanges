@@ -10,7 +10,7 @@
 UCLASS(Config = RemRangesTags)
 class REM_API URemRangesTags : public URemMetaTags
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };
 
 #undef REM_API
