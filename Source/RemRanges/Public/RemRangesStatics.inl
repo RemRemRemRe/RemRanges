@@ -3,7 +3,7 @@
 #pragma once
 
 #include <type_traits>
-#include "Templates/RemIsInstance.h"
+#include "Templates/RemInstanceOf.h"
 
 #include "transrangers.hpp"
 
@@ -19,8 +19,7 @@ void ForEach(TRanger Ranger)
     });
 }
 
-template <transrangers::is_ranger TRanger, typename ArrayType>
-    requires Rem::is_instance_v<ArrayType, TArray>
+template <transrangers::is_ranger TRanger, CInstanceOf<TArray> ArrayType>
 constexpr void ToArray(ArrayType& OutArray, TRanger Ranger)
 {
     using ValueType = transrangers::ranger_element_t<TRanger>;
@@ -84,15 +83,13 @@ template <transrangers::is_ranger TRanger>
     return NthElement<0, TRanger>(Ranger);
 }
 
-template <typename ArrayType>
-    requires Rem::is_instance_v<ArrayType, TArray>
+template <CInstanceOf<TArray> ArrayType>
 [[nodiscard]] constexpr auto ArrayView(ArrayType&& Array)
 {
     return transrangers::all(MakeArrayView(Array));
 }
 
-template <typename ArrayType>
-    requires Rem::is_instance_v<ArrayType, TArray>
+template <CInstanceOf<TArray> ArrayType>
 [[nodiscard]] constexpr auto ConstArrayView(ArrayType&& Array)
 {
     return transrangers::all(MakeConstArrayView(Array));
