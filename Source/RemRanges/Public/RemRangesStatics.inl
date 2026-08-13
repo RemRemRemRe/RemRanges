@@ -22,12 +22,13 @@ void ForEach(TRanger Ranger)
 template <transrangers::is_ranger TRanger, CInstanceOf<TArray> ArrayType>
 constexpr void ToArray(ArrayType& OutArray, TRanger Ranger)
 {
-    using ValueType = transrangers::ranger_element_t<TRanger>;
+    using ValueType      = transrangers::ranger_element_t<TRanger>;
+    using ArrayValueType = std::remove_cvref_t<ValueType>;
 
     ForEach(transrangers::transform(
         [&](ValueType&& Value)
         {
-            OutArray.Add(Value);
+            OutArray.Add(ArrayValueType{Value});
             return true;
         },
         std::move(Ranger)));
@@ -36,9 +37,10 @@ constexpr void ToArray(ArrayType& OutArray, TRanger Ranger)
 template <transrangers::is_ranger TRanger>
 [[nodiscard]] constexpr decltype(auto) ToArray(TRanger Ranger)
 {
-    using ValueType = transrangers::ranger_element_t<TRanger>;
+    using ValueType      = transrangers::ranger_element_t<TRanger>;
+    using ArrayValueType = std::remove_cvref_t<ValueType>;
 
-    TArray<ValueType> OutArray{};
+    TArray<ArrayValueType> OutArray{};
     ToArray(OutArray, Ranger);
 
     return OutArray;
@@ -47,11 +49,12 @@ template <transrangers::is_ranger TRanger>
 template <uint32 Count, transrangers::is_ranger TRanger>
 [[nodiscard]] constexpr decltype(auto) TakeN(TRanger Ranger)
 {
-    using ValueType = transrangers::ranger_element_t<TRanger>;
+    using ValueType      = transrangers::ranger_element_t<TRanger>;
+    using ArrayValueType = std::remove_cvref_t<ValueType>;
 
     static_assert(Count > 0, "Count must be greater than 0");
 
-    TArray<ValueType> OutArray{};
+    TArray<ArrayValueType> OutArray{};
     ToArray(OutArray, transrangers::take<Count>(Ranger));
 
     return OutArray;
@@ -60,9 +63,10 @@ template <uint32 Count, transrangers::is_ranger TRanger>
 template <uint32 Ordinal, transrangers::is_ranger TRanger>
 [[nodiscard]] constexpr decltype(auto) NthElement(TRanger Ranger)
 {
-    using ValueType = transrangers::ranger_element_t<TRanger>;
+    using ValueType      = transrangers::ranger_element_t<TRanger>;
+    using ArrayValueType = std::remove_cvref_t<ValueType>;
 
-    auto Output = std::remove_reference_t<ValueType>{};
+    auto Output = ArrayValueType{};
 
     auto NthRanger = transrangers::take<Ordinal + 1>(Ranger);
 
