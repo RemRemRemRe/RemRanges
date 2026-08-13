@@ -247,6 +247,37 @@ void FRemRangesTest::Define()
         });
     });
 
+    Describe(TEXT("ConstArrayView"), [this]
+    {
+        It(TEXT("should expose const elements without copies"), [this]
+        {
+            auto Numbers = MakeNumbers(3);
+
+            auto Sum = 0;
+            Rem::Ranges::ForEach(
+                transrangers::transform(
+                    [&Sum](const int32& Value) -> bool
+                    {
+                        Sum += Value;
+                        return true;
+                    },
+                    Rem::Ranges::ConstArrayView(Numbers)));
+
+            TestEqual(TEXT("sum"), Sum, 3);
+        });
+
+        It(TEXT("should materialize a copy of the const view"), [this]
+        {
+            auto Numbers = MakeNumbers(4);
+
+            const auto Materialized = Rem::Ranges::ToArray(
+                Rem::Ranges::ConstArrayView(Numbers));
+
+            TestEqual(TEXT("count"), Materialized.Num(), 4);
+            TestEqual(TEXT("values preserved"), Materialized[3], 3);
+        });
+    });
+
     Describe(TEXT("Compositions"), [this]
     {
         It(TEXT("concat should join rangers end to end"), [this]
