@@ -253,7 +253,7 @@ void FRemRangesTest::Define()
         {
             auto Numbers = MakeNumbers(3);
 
-            auto Sum = 0;
+            int32 Sum = 0;
             Rem::Ranges::ForEach(
                 transrangers::transform(
                     [&Sum](const int32& Value) -> bool

@@ -22,6 +22,9 @@ void ForEach(TRanger Ranger)
 template <transrangers::is_ranger TRanger, CInstanceOf<TArray> ArrayType>
 constexpr void ToArray(ArrayType& OutArray, TRanger Ranger)
 {
+    // rangers over const views yield reference elements: the container must
+    // store plain values, while the transform lambda keeps the original
+    // forwarding semantics of ValueType
     using ValueType      = transrangers::ranger_element_t<TRanger>;
     using ArrayValueType = std::remove_cvref_t<ValueType>;
 
