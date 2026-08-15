@@ -351,6 +351,149 @@ void FRemRangesTest::Define()
             TestEqual(TEXT("visited"), Visited, 5);
         });
     });
+
+    Describe(TEXT("GroupAdjacent"), [this]
+    {
+        It(TEXT("should group consecutive equal keys into runs of sub-views"), [this]
+        {
+            const TArray<int32> Numbers{1, 1, 2, 2, 2, 3};
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const int32 Value)
+                {
+                    return Value;
+                },
+                Rem::Ranges::ConstArrayView(Numbers)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 3);
+            TestEqual(TEXT("first run size"), Runs[0].Num(), 2);
+            TestEqual(TEXT("first run value"), Runs[0][0], 1);
+            TestEqual(TEXT("second run size"), Runs[1].Num(), 3);
+            TestEqual(TEXT("second run value"), Runs[1][0], 2);
+            TestEqual(TEXT("third run size"), Runs[2].Num(), 1);
+            TestEqual(TEXT("third run value"), Runs[2][0], 3);
+        });
+
+        It(TEXT("should emit zero-copy views into the source array"), [this]
+        {
+            const TArray<int32> Numbers{1, 1, 2, 2};
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const int32 Value)
+                {
+                    return Value;
+                },
+                Rem::Ranges::ConstArrayView(Numbers)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 2);
+            // the views address the source elements directly — no copies
+            TestTrue(TEXT("first run points at source"), &Runs[0][0] == &Numbers[0]);
+            TestTrue(TEXT("second run points at source"), &Runs[1][0] == &Numbers[2]);
+        });
+
+        It(TEXT("should treat non-adjacent equal keys as separate runs (precondition: input is key-sorted)"), [this]
+        {
+            const TArray<int32> Numbers{1, 2, 1};
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const int32 Value)
+                {
+                    return Value;
+                },
+                Rem::Ranges::ConstArrayView(Numbers)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 3);
+        });
+
+        It(TEXT("should merge interleaved equal keys once the input is sorted by the full key"), [this]
+        {
+            // (frame, config) key pair: with only the frame sorted, the interleaved
+            // [A, B, A] pattern would split into three runs; sorting by the full
+            // key (as the production comparators do) collapses it into two.
+            struct FKeyed
+            {
+                int32 Frame;
+                int32 Config;
+
+                bool operator==(const FKeyed& Other) const
+                {
+                    return Frame == Other.Frame && Config == Other.Config;
+                }
+            };
+
+            TArray<FKeyed> Items{{1, 10}, {1, 20}, {1, 10}};
+            Items.Sort([](const FKeyed& A, const FKeyed& B)
+            {
+                if (A.Frame != B.Frame)
+                {
+                    return A.Frame < B.Frame;
+                }
+                return A.Config < B.Config;
+            });
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const FKeyed& Item)
+                {
+                    return Item;
+                },
+                Rem::Ranges::ConstArrayView(Items)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 2);
+            TestEqual(TEXT("first run size"), Runs[0].Num(), 2);
+            TestEqual(TEXT("second run size"), Runs[1].Num(), 1);
+        });
+
+        It(TEXT("should emit no runs for an empty range"), [this]
+        {
+            const TArray<int32> Empty;
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const int32 Value)
+                {
+                    return Value;
+                },
+                Rem::Ranges::ConstArrayView(Empty)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 0);
+        });
+
+        It(TEXT("should emit a single run for a single element"), [this]
+        {
+            const TArray<int32> Numbers{42};
+
+            const auto Runs = Rem::Ranges::ToArray(Rem::Ranges::GroupAdjacent(
+                [](const int32 Value)
+                {
+                    return Value;
+                },
+                Rem::Ranges::ConstArrayView(Numbers)));
+
+            TestEqual(TEXT("run count"), Runs.Num(), 1);
+            TestEqual(TEXT("run value"), Runs[0][0], 42);
+        });
+
+        It(TEXT("should support early exit downstream (take the first run only)"), [this]
+        {
+            const TArray<int32> Numbers{1, 1, 2, 2, 3};
+
+            const auto FirstRunSize = Rem::Ranges::TakeN<1>(
+                transrangers::transform(
+                    [](const TArrayView<const int32>& Run)
+                    {
+                        return Run.Num();
+                    },
+                    Rem::Ranges::GroupAdjacent(
+                        [](const int32 Value)
+                        {
+                            return Value;
+                        },
+                        Rem::Ranges::ConstArrayView(Numbers))));
+
+            TestEqual(TEXT("run count"), FirstRunSize.Num(), 1);
+            TestEqual(TEXT("first run size"), FirstRunSize[0], 2);
+        });
+    });
+
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS

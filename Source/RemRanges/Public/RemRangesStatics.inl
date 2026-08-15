@@ -101,4 +101,117 @@ template <CInstanceOf<TArray> ArrayType>
 {
     return transrangers::all(MakeConstArrayView(Array));
 }
+
+namespace Detail
+{
+/** Cursor yielding the run's sub-view of the source. */
+template <typename T>
+struct TRunCursor
+{
+    TArrayView<T> Run;
+
+    TRunCursor() = default;
+
+    explicit TRunCursor(const TArrayView<T>& InRun)
+        : Run(InRun)
+    {
+    }
+
+    [[nodiscard]] TArrayView<T> operator*() const
+    {
+        return Run;
+    }
+};
+}
+
+/**
+ * Groups consecutive elements sharing the same key into runs, emitting one
+ * TArrayView<element> per run: a zero-copy sub-view of the source elements.
+ *
+ * Precondition: elements with equal keys must be contiguous in the input
+ * (e.g. after sorting by the key), like transrangers::unique -- only adjacent
+ * elements are compared. The source must yield reference elements into one
+ * contiguous array (ArrayView/ConstArrayView; do not place a filter in front)
+ * so each run can be described by a pointer range. Emitted views stay valid
+ * as long as the source array does.
+ */
+template <typename FKey, transrangers::is_ranger TRanger>
+[[nodiscard]] auto GroupAdjacent(FKey&& Key, TRanger Ranger)
+{
+    using Element = transrangers::ranger_element_t<TRanger>;
+    static_assert(std::is_lvalue_reference_v<Element>,
+        "GroupAdjacent requires reference elements: the source must be a contiguous "
+        "view over an array (ArrayView/ConstArrayView) so runs can be emitted as "
+        "sub-views without copying.");
+
+    using RunElement = std::remove_reference_t<Element>;
+    using RunView    = TArrayView<RunElement>;
+    using RunCursor  = Detail::TRunCursor<RunElement>;
+
+    return transrangers::ranger<RunCursor>(
+        [ranger = std::move(Ranger),
+            key = std::forward<FKey>(Key),
+            bStarted = false,
+            bExhausted = false,
+            p = typename TRanger::cursor{}]
+    (auto dst) mutable
+        {
+            while (!bExhausted)
+            {
+                // Pull the first element of the run into p. The source is
+                // stopped right after it: ranger returns true only when the
+                // source had nothing left to yield, i.e. it is exhausted.
+                if (!bStarted)
+                {
+                    if (ranger([&](const auto& q)
+                    {
+                        p = q;
+                        return false;
+                    }))
+                    {
+                        bExhausted = true;
+                        break;
+                    }
+                    bStarted = true;
+                }
+
+                const RunElement* RunBegin = &*p;
+                auto pLast                 = p;
+                const auto RunKey          = key(*p);
+
+                // Consume the remainder of the run. The first element whose
+                // key differs is held in p for the next call: the source
+                // consumes the element that stops it, so it must be remembered
+                // here (same pattern as transrangers::unique).
+                auto bHasBoundary = false;
+                if (ranger([&](const auto& q)
+                {
+                    if (key(*q) == RunKey)
+                    {
+                        pLast = q;
+                        return true;
+                    }
+                    p            = q;
+                    bHasBoundary = true;
+                    return false;
+                }))
+                {
+                    bExhausted = true;
+                }
+
+                // Run end: the boundary element's address, or one past the last
+                // collected element when the run reaches the source's end.
+                const RunElement* RunEnd = bHasBoundary
+                                               ? &*p
+                                               : &*pLast + 1;
+
+                if (!dst(RunCursor(RunView(RunBegin, static_cast<int32>(RunEnd - RunBegin)))))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+}
 }
