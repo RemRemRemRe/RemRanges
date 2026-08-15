@@ -1,6 +1,5 @@
 // Copyright RemRemRemRe. All Rights Reserved.
 
-using System.IO;
 using UnrealBuildTool;
 using Rem.BuildRule;
 
