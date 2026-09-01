@@ -16,6 +16,7 @@ bool IRemRangesModule::IsAvailable()
 
 class FRemRangesModule final : public IRemRangesModule
 {
+public:
     /** IModuleInterface implementation */
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
