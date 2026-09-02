@@ -14,6 +14,8 @@ bool IRemRangesModule::IsAvailable()
 }
 
 
+namespace
+{
 class FRemRangesModule final : public IRemRangesModule
 {
 public:
@@ -35,4 +37,5 @@ void FRemRangesModule::ShutdownModule()
     // This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
     // we call this function before unloading the module.
     IRemRangesModule::ShutdownModule();
+}
 }
