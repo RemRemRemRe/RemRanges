@@ -421,7 +421,7 @@ void FRemRangesTest::Define()
                 }
             };
 
-            TArray<FKeyed> Items{{1, 10}, {1, 20}, {1, 10}};
+            TArray<FKeyed> Items{{.Frame = 1, .Config = 10}, {.Frame = 1, .Config = 20}, {.Frame = 1, .Config = 10}};
             Items.Sort([](const FKeyed& A, const FKeyed& B)
             {
                 if (A.Frame != B.Frame)
