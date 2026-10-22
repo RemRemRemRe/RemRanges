@@ -17,7 +17,7 @@ TArray<int32> MakeNumbers(const int32 Count)
 {
     TArray<int32> Numbers;
     Numbers.Reserve(Count);
-    for (int32 Index = 0; Index < Count; ++Index)
+    for (auto Index = 0; Index < Count; ++Index)
     {
         Numbers.Add(Index);
     }
@@ -253,7 +253,7 @@ void FRemRangesTest::Define()
         {
             auto Numbers = MakeNumbers(3);
 
-            int32 Sum = 0;
+            auto Sum = 0;
             Rem::Ranges::ForEach(
                 transrangers::transform(
                     [&Sum](const int32& Value) -> bool
